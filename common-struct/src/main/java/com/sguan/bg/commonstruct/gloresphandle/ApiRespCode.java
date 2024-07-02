@@ -1,11 +1,11 @@
-package com.sguan.bg.authsvc.globalhandler;
+package com.sguan.bg.commonstruct.gloresphandle;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum AuthRespCode {
+public enum ApiRespCode {
 
     /**
      * Success

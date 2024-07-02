@@ -1,14 +1,12 @@
-package com.sguan.bg.authsvc.globalhandler;
+package com.sguan.bg.commonstruct.gloresphandle;
 
 
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import com.sguan.bg.authsvc.annotations.ResultWrapper;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
@@ -28,29 +26,29 @@ public class GlobalExceptionHandler {
             MismatchedInputException.class,
     })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public AuthApiResp handleBadReqException(HttpServletResponse response, Exception e) {
+    public ApiResp handleBadReqException(HttpServletResponse response, Exception e) {
         log.error("client bad request: " + e.getMessage(), e);
-        return AuthApiResp.error(AuthRespCode.CLI_BAD_REQ, e);
+        return ApiResp.error(ApiRespCode.CLI_BAD_REQ, e);
     }
 
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public AuthApiResp handleBindException(HttpServletResponse response, BindException e) {
+    public ApiResp handleBindException(HttpServletResponse response, BindException e) {
         log.error("client input error: " + e.getMessage(), e);
         String message = e.getBindingResult().getAllErrors().stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.joining("\n"));
-        return AuthApiResp.error(AuthRespCode.CLI_INVALID_INPUT, message);
+        return ApiResp.error(ApiRespCode.CLI_INVALID_INPUT, message);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public AuthApiResp handleMANVException(HttpServletResponse response, MethodArgumentNotValidException e) {
+    public ApiResp handleMANVException(HttpServletResponse response, MethodArgumentNotValidException e) {
         log.error("client input error: " + e.getMessage(), e);
         String message = e.getBindingResult().getAllErrors().stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.joining("\n"));
-        return AuthApiResp.error(AuthRespCode.CLI_INVALID_INPUT, message);
+        return ApiResp.error(ApiRespCode.CLI_INVALID_INPUT, message);
     }
 
 
@@ -59,11 +57,11 @@ public class GlobalExceptionHandler {
      *=           This Exception should be threw in controller layer           =
      *==========================================================================
      */
-    @ExceptionHandler(AuthException.class)
+    @ExceptionHandler(ApiException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public AuthApiResp handleAuthException(HttpServletResponse response, AuthException e) {
+    public ApiResp handleApiException(HttpServletResponse response, ApiException e) {
         log.error("sever internal error: " + e.getMessage(), e);
-        return AuthApiResp.error(e);
+        return ApiResp.error(e);
     }
 
     /**
@@ -71,11 +69,11 @@ public class GlobalExceptionHandler {
      *=           This Exception can be threw in any layer           =
      *================================================================
      */
-    @ExceptionHandler(AuthoRuntimeException.class)
+    @ExceptionHandler(ApiRuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public AuthApiResp handleAuthException(HttpServletResponse response, AuthoRuntimeException e) {
+    public ApiResp handleApiException(HttpServletResponse response, ApiRuntimeException e) {
         log.error("sever internal error: " + e.getMessage(), e);
-        return AuthApiResp.error(e);
+        return ApiResp.error(e);
     }
 
     /**
@@ -85,8 +83,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public AuthApiResp handleAuthException(HttpServletResponse response, Exception e) {
+    public ApiResp handleApiException(HttpServletResponse response, Exception e) {
         log.error("sever internal error: " + e.getMessage(), e);
-        return AuthApiResp.error(AuthRespCode.SEVER_ERROR, e);
+        return ApiResp.error(ApiRespCode.SEVER_ERROR, e);
     }
 }
