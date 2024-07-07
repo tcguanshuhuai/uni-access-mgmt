@@ -1,10 +1,11 @@
 package com.sguan.bg.commonstruct.gloresphandle;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 @AllArgsConstructor
-@Getter
 public enum ApiRespCode {
 
     /**
@@ -27,7 +28,9 @@ public enum ApiRespCode {
      */
     SEVER_ERROR(21000, "Sever Error")
     ;
+    @Getter
     private final int code;
+    @Getter
     private final String msg;
 
 }
